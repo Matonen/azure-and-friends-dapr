@@ -1,0 +1,17 @@
+version: 1
+common:
+  resourcesPath: ./components
+apps:
+  - appID: weather-api
+    appDirPath: ../src/Weather.Api
+    command: ["dotnet", "run"]
+  - appID: weather-service
+    appDirPath: ../src/Weather.Service/
+    appProtocol: grpc
+    appPort: 5119
+    command: ["dotnet", "run"]
+  - appID: weather-processor
+    appDirPath: ../src/Weather.Processor/
+    appProtocol: http
+    appPort: 5083
+    command: ["dotnet", "run"]

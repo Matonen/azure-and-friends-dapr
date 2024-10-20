@@ -1,0 +1,22 @@
+apiVersion: dapr.io/v1alpha1
+kind: Component
+metadata:
+  name: hurricane-watches
+spec:
+  type: bindings.azure.storagequeues
+  version: v1
+  metadata:
+    - name: accountName
+      value: devstoreaccount1
+    - name: accountKey
+      value: Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==
+    - name: queueName
+      value: hurricane-watches
+    - name: endpoint
+      value: http://127.0.0.1:10001
+    - name: direction
+      value: input
+    - name: pollingInterval
+      value: 1s
+scopes:
+  - weather-processor

@@ -1,0 +1,40 @@
+apiVersion: dapr.io/v1alpha1
+kind: Resiliency
+metadata:
+  name: resiliency
+scopes:
+  - weather-processor
+  - weather-api
+
+spec:
+  policies:
+    timeouts:
+      general: 5s
+
+    retries:
+      exponentialRetry:
+        policy: exponential
+        maxInterval: 10s
+        maxRetries: 5
+
+    circuitBreakers:
+      simpleCB:
+        maxRequests: 1
+        timeout: 5s
+        trip: consecutiveFailures >= 5
+
+    targets:
+      apps:
+        weather-service:
+          timeouts: general
+          retry: exponentialRetry
+          circuitBreaker: simpleCB
+      components:
+        hurricane-watches:
+          timeouts: general
+          retry: exponentialRetry
+          circuitBreaker: simpleCB
+        hurricane-warnings:
+          timeouts: general
+          retry: exponentialRetry
+          circuitBreaker: simpleCB
