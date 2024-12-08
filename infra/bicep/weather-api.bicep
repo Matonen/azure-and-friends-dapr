@@ -8,7 +8,7 @@ param weatherApiImage string
 
 param caeId string
 
-resource weatherApi 'Microsoft.App/containerApps@2023-05-01' = {
+resource weatherApi 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'ca-${solution}-weather-api-${env}'
   location: location
   properties: {
@@ -35,6 +35,32 @@ resource weatherApi 'Microsoft.App/containerApps@2023-05-01' = {
             cpu: json('0.25')
             memory: '0.5Gi'
           }
+          probes: [
+            {
+              type: 'Startup'
+              httpGet: {
+                port: 8080
+                path: '/healthz/startup'
+                scheme: 'HTTP'
+              }
+            }
+            {
+              type: 'Readiness'
+              httpGet: {
+                port: 8080
+                path: '/healthz/readiness'
+                scheme: 'HTTP'
+              }
+            }
+            {
+              type: 'Liveness'
+              httpGet: {
+                port: 8080
+                path: '/healthz/liveness'
+                scheme: 'HTTP'
+              }
+            }
+          ]
         }
       ]
       scale: {

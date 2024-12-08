@@ -6,7 +6,13 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddGrpc();
 builder.Services.AddGrpcReflection();
 builder.Services.AddSingleton(TimeProvider.System);
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.MapHealthChecks("/healthz/startup");
+app.MapHealthChecks("/healthz/readiness");
+app.MapHealthChecks("/healthz/liveness");
 
 // Configure the HTTP request pipeline.
 app.MapGrpcService<WeatherService>();

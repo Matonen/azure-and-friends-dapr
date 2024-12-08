@@ -30,11 +30,11 @@ spec:
           retry: exponentialRetry
           circuitBreaker: simpleCB
       components:
-        hurricane-watches:
+        hurricanes:
           timeouts: general
           retry: exponentialRetry
           circuitBreaker: simpleCB
-        hurricane-warnings:
+        hurricane-alerts:
           timeouts: general
           retry: exponentialRetry
           circuitBreaker: simpleCB
