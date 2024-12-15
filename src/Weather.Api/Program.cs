@@ -8,7 +8,13 @@ builder.Services.AddGrpcClient<WeatherService.WeatherServiceClient>(o =>
     o.Address = new Uri("http://localhost:" + builder.Configuration.GetValue<string>("DAPR_GRPC_PORT"));
 });
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
+
+app.MapHealthChecks("/healthz/startup");
+app.MapHealthChecks("/healthz/readiness");
+app.MapHealthChecks("/healthz/liveness");
 
 app.MapGet("/weather", async (WeatherService.WeatherServiceClient client) =>
 {

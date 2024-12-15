@@ -10,8 +10,8 @@ resource eventHubNamespace 'Microsoft.EventHub/namespaces@2024-01-01' = {
   }
 }
 
-resource hurricaneWatchesEventHub 'Microsoft.EventHub/namespaces/eventhubs@2024-01-01' = {
-  name: 'hurricane-watches'
+resource hurricanesEventHub 'Microsoft.EventHub/namespaces/eventhubs@2024-01-01' = {
+  name: 'hurricanes'
   parent: eventHubNamespace
   properties: {
     messageRetentionInDays: 1
@@ -19,8 +19,8 @@ resource hurricaneWatchesEventHub 'Microsoft.EventHub/namespaces/eventhubs@2024-
   }
 }
 
-resource hurricaneWarningsEventHub 'Microsoft.EventHub/namespaces/eventhubs@2024-01-01' = {
-  name: 'hurricane-warnings'
+resource hurricaneAlertsEventHub 'Microsoft.EventHub/namespaces/eventhubs@2024-01-01' = {
+  name: 'hurricane-alerts'
   parent: eventHubNamespace
   properties: {
     messageRetentionInDays: 1

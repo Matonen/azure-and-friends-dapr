@@ -8,7 +8,7 @@ param caeId string
 
 param weatherServiceImage string
 
-resource weatherService 'Microsoft.App/containerApps@2023-05-01' = {
+resource weatherService 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'ca-${solution}-weather-svc-${env}'
   location: location
   properties: {

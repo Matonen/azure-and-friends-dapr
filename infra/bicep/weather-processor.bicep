@@ -8,7 +8,7 @@ param caeId string
 
 param weatherProcessorImage string
 
-resource weatherProcessor 'Microsoft.App/containerApps@2023-05-01' = {
+resource weatherProcessor 'Microsoft.App/containerApps@2024-03-01' = {
   name: 'ca-${solution}-weather-proc-${env}'
   location: location
   properties: {
@@ -31,6 +31,32 @@ resource weatherProcessor 'Microsoft.App/containerApps@2023-05-01' = {
             cpu: json('0.25')
             memory: '0.5Gi'
           }
+          probes: [
+            {
+              type: 'Startup'
+              httpGet: {
+                port: 8080
+                path: '/healthz/startup'
+                scheme: 'HTTP'
+              }
+            }
+            {
+              type: 'Readiness'
+              httpGet: {
+                port: 8080
+                path: '/healthz/readiness'
+                scheme: 'HTTP'
+              }
+            }
+            {
+              type: 'Liveness'
+              httpGet: {
+                port: 8080
+                path: '/healthz/liveness'
+                scheme: 'HTTP'
+              }
+            }
+          ]
         }
       ]
       scale: {

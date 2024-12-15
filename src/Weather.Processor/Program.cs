@@ -11,22 +11,28 @@ builder.Services.AddGrpcClient<WeatherService.WeatherServiceClient>(o =>
 
 builder.Services.AddSingleton(new DaprClientBuilder().Build());
 
+builder.Services.AddHealthChecks();
+
 var app = builder.Build();
 
-app.MapPost("/hurricane-watches", async (HurricaneWatch hurricaneWatch, WeatherService.WeatherServiceClient weatherClient, DaprClient daprClient) =>
+app.MapHealthChecks("/healthz/startup");
+app.MapHealthChecks("/healthz/readiness");
+app.MapHealthChecks("/healthz/liveness");
+
+app.MapPost("/hurricanes", async (Hurricane hurricane, WeatherService.WeatherServiceClient weatherClient, DaprClient daprClient) =>
 {
-    var response = await weatherClient.GetCurrentWeatherAsync(new GetCurrentWeatherRequest { City = hurricaneWatch.City },
+    var response = await weatherClient.GetCurrentWeatherAsync(new GetCurrentWeatherRequest { City = hurricane.City },
        new Metadata
        {
             { "dapr-app-id", "weather-service" }
        });
 
-    await daprClient.InvokeBindingAsync("hurricane-warnings", "create", new HurricaneWarning
+    await daprClient.InvokeBindingAsync("hurricane-alerts", "create", new HurricaneAlert
     {
-        Message = $"Hurricane Warning for {hurricaneWatch.City}! Stay safe and take necessary precautions!",
+        Message = $"Hurricane Warning for {hurricane.City}! Stay safe and take necessary precautions!",
         HurricaneName = "JYP",
-        City = hurricaneWatch.City,
-        Category = hurricaneWatch.Category,
+        City = hurricane.City,
+        Category = hurricane.Category,
         Temperature = response.Temperature,
     });
     return Results.Ok();
@@ -34,14 +40,14 @@ app.MapPost("/hurricane-watches", async (HurricaneWatch hurricaneWatch, WeatherS
 
 app.Run();
 
-public class HurricaneWatch()
+public class Hurricane()
 {
     public required string City { get; set; }
 
     public int Category { get; set; }
 }
 
-public class HurricaneWarning()
+public class HurricaneAlert()
 {
     public required string City { get; set; }
 

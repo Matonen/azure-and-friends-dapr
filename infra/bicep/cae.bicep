@@ -66,9 +66,9 @@ resource cae 'Microsoft.App/managedEnvironments@2024-03-01' = {
   }
 }
 
-resource hurricaneWatches 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource hurricanesBinding 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
   parent: cae
-  name: 'hurricane-watches'
+  name: 'hurricanes'
   properties: {
     componentType: 'bindings.azure.eventhubs'
     version: 'v1'
@@ -80,7 +80,7 @@ resource hurricaneWatches 'Microsoft.App/managedEnvironments/daprComponents@2024
       }
       {
         name: 'connectionString'
-        value: '${eventHubNamespaceAccessKey.listKeys().primaryConnectionString};EntityPath=hurricane-watches'
+        value: '${eventHubNamespaceAccessKey.listKeys().primaryConnectionString};EntityPath=hurricanes'
       }
       {
         name: 'direction'
@@ -103,9 +103,9 @@ resource hurricaneWatches 'Microsoft.App/managedEnvironments/daprComponents@2024
   }
 }
 
-resource hurricaneWarnings 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
+resource hurricaneAlertsBinding 'Microsoft.App/managedEnvironments/daprComponents@2024-03-01' = {
   parent: cae
-  name: 'hurricane-warnings'
+  name: 'hurricane-alerts'
   properties: {
     componentType: 'bindings.azure.eventhubs'
     version: 'v1'
@@ -113,7 +113,7 @@ resource hurricaneWarnings 'Microsoft.App/managedEnvironments/daprComponents@202
     metadata: [
       {
         name: 'connectionString'
-        value: '${eventHubNamespaceAccessKey.listKeys().primaryConnectionString};EntityPath=hurricane-warnings'
+        value: '${eventHubNamespaceAccessKey.listKeys().primaryConnectionString};EntityPath=hurricane-alerts'
       }
       {
         name: 'direction'

@@ -30,7 +30,7 @@ Follow these steps to get the project up and running:
 
 ### Testing the solution
 
-Add hurricate watch message to `hurricane-watches` queue:
+Add hurricate watch message to `hurricanes` queue:
 
 ```json
 { 
